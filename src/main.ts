@@ -1,1 +1,3 @@
-console.log("hello world");
+import { initEnv, initRouter } from "./utils/startup.utils";
+initEnv();
+initRouter();

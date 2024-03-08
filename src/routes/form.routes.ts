@@ -53,6 +53,22 @@ const retrieveFormResponsesValidations: ValidationChain[] = [
   query("filters").isString().optional(),
 ];
 
+/**
+ * @description takes a `Request` and `Response` objects as input, and retrieves form
+ * submissions from the database based on user input parameters such as form ID,
+ * limit, after date, before date, offset, status, include edit link, and sort. It
+ * then filters the submissions based on specified filters and returns them to the
+ * user in a JSON format.
+ * 
+ * @param { Request } req - request object containing the parameters for retrieving
+ * form submissions.
+ * 
+ * @param { Response } res - HTTP response object that will be used to send the
+ * retrieved form submissions back to the client.
+ * 
+ * @returns { Promise<Response | void> } a list of filtered form submissions sent to
+ * the client in JSON format.
+ */
 const retrieveFormResponsesRoute = async (
   req: Request,
   res: Response
@@ -101,6 +117,14 @@ const retrieveFormResponsesRoute = async (
   }
 };
 
+/**
+ * @description loads routes for form responses by calling three internal functions:
+ * `retrieveFormResponsesValidations`, `retrieveFormResponsesRoute`. These functions
+ * retrieve form responses data and validate it.
+ * 
+ * @param { Express } app - Express application instance that the function operates
+ * on, providing a route for handling GET requests to `/:formId/filteredResponses`.
+ */
 export const loadFormRoutes = (app: Express) => {
   app.get(
     "/:formId/filteredResponses",

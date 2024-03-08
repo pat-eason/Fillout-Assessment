@@ -6,7 +6,7 @@ import { loadFormRoutes } from "../routes/form.routes";
 export const initEnv = (): DotenvConfigOutput => dotenv.config();
 
 export const initRouter = () => {
-  const port = 3000;
+  const port = process.env.PORT || 3001;
   const app = express();
 
   app.use(express.json());

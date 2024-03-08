@@ -57,34 +57,43 @@ const retrieveFormResponsesRoute = async (
   req: Request,
   res: Response
 ): Promise<Response | void> => {
-  const {
-    formId,
-    limit,
-    afterDate,
-    beforeDate,
-    offset,
-    status,
-    includeEditLink,
-    sort,
-    filters,
-  } = validateRequest(req, res);
+  try {
+    const {
+      formId,
+      limit,
+      afterDate,
+      beforeDate,
+      offset,
+      status,
+      includeEditLink,
+      sort,
+      filters,
+    } = validateRequest(req, res);
 
-  const requestPayload: RetrieveFormsSubmissionsRequestType = {
-    limit,
-    afterDate,
-    beforeDate,
-    offset,
-    status,
-    includeEditLink,
-    sort,
-  };
-  const formSubmissions = await retrieveFormSubmissions(formId, requestPayload);
-  const filteredFormSubmissions = filterFormSubmissions(
-    formSubmissions,
-    validateFilters(filters)
-  );
+    const requestPayload: RetrieveFormsSubmissionsRequestType = {
+      limit,
+      afterDate,
+      beforeDate,
+      offset,
+      status,
+      includeEditLink,
+      sort,
+    };
+    const formSubmissions = await retrieveFormSubmissions(
+      formId,
+      requestPayload
+    );
+    const filteredFormSubmissions = filterFormSubmissions(
+      formSubmissions,
+      validateFilters(filters)
+    );
 
-  return res.status(StatusCodes.OK).send(filteredFormSubmissions);
+    return res.status(StatusCodes.OK).send(filteredFormSubmissions);
+  } catch (err) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+      error: (err as Error).message,
+    });
+  }
 };
 
 export const loadFormRoutes = (app: Express) => {

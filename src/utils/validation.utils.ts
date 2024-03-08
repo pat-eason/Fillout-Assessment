@@ -17,7 +17,7 @@ export const validateRequest = (req: Request, res: Response) => {
     res
       .status(StatusCodes.UNPROCESSABLE_ENTITY)
       .json(formatErrorResponse(result.array()));
-    throw new Error("Request failed validation");
+    return;
   }
 
   return matchedData(req);

@@ -58,6 +58,10 @@ const retrieveFormResponsesRoute = async (
   res: Response
 ): Promise<Response | void> => {
   try {
+    const requestParams = validateRequest(req, res);
+    if (!requestParams) {
+      return;
+    }
     const {
       formId,
       limit,
@@ -68,7 +72,7 @@ const retrieveFormResponsesRoute = async (
       includeEditLink,
       sort,
       filters,
-    } = validateRequest(req, res);
+    } = requestParams;
 
     const requestPayload: RetrieveFormsSubmissionsRequestType = {
       limit,
@@ -90,6 +94,7 @@ const retrieveFormResponsesRoute = async (
 
     return res.status(StatusCodes.OK).send(filteredFormSubmissions);
   } catch (err) {
+    console.log("err", err);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
       error: (err as Error).message,
     });
